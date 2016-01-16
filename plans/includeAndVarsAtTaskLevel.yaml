@@ -1,0 +1,14 @@
+---
+name: "Plan With Tasks and Vars"
+vars:
+  foo: bar
+tasks:
+  - name: task1
+    action: ls=al
+  - name: "included tasks" 
+    include: test/tasks/withIncludeAndVars.yaml
+    vars:
+      foo: nope
+      bar: baz
+  - name: task2
+    action: hey="yoooo"

@@ -1,0 +1,8 @@
+name: "Process Test"
+hosts:
+  - individual
+tasks:
+  - name: "Start process"
+    shell: cmd="./printer.py &"
+  - name: "Echo hello world"
+    shell: cmd="echo hello world"

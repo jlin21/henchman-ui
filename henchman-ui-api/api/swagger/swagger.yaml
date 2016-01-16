@@ -1,0 +1,271 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Hello World App
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /v0
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+# PLAN
+  /plans:
+    x-swagger-router-controller: plans
+    get:
+      description: Returns a list of plans available
+      operationId: listPlans
+      responses:
+        "200":
+          description: Contains a list of plans
+          schema:
+            $ref: "#/definitions/ListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /plans/{file}:
+    x-swagger-router-controller: plans
+    get:
+      description: Returns the contents of the specified plan
+      operationId: getPlan
+      parameters:
+        - name: file
+          in: path
+          description: The name of the file to be accessed
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Contains the plan's content
+          schema:
+            $ref: "#/definitions/GetResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      description: Updates the existing content of the specified plan
+      operationId: putPlan
+      parameters:
+        - name: file
+          in: path
+          description: The name of the file to be accessed
+          required: true
+          type: string
+        - name: content
+          in: body
+          description: The new content to be written to the file
+          required: true
+          schema:
+            $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: Contains a message indicating if the content was written to the plan
+          schema:
+            $ref: "#/definitions/PutResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Creates a new plan
+      operationId: postPlan
+      parameters:
+        - name: file
+          in: path
+          description: The name of the file to be created
+          required: true
+          type: string
+        - name: content
+          in: body
+          description: The contents of the plan
+          required: true
+          schema:
+            $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: Contains a message indicating if creation of the plan succeeded
+          schema:
+            $ref: "#/definitions/PostResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: deletes an existing
+      operationId: deletePlan
+      parameters:
+        - name: file
+          in: path
+          description: The name of the file to be removed
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Contains a message indicating if deletion of the plan succeeded
+          schema:
+            $ref: "#/definitions/DeleteResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+# INVENTORY
+  /inventory:
+    x-swagger-router-controller: inventory
+    get:
+      description: Returns a list of available inventories
+      operationId: listInventories
+      responses:
+        "200":
+          description: Sucess
+          schema:
+            $ref: "#/definitions/ListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /inventory/{file}:
+    x-swagger-router-controller: inventory
+    get:
+      description: Returns the contents of the specified inventory
+      operationId: getInventory
+      parameters:
+        - name: file
+          in: path
+          description: The name of the file to be accessed
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Contains the inventory's content
+          schema:
+            $ref: "#/definitions/GetResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      description: Updates the existing content of the specified inventory
+      operationId: putInventory
+      parameters:
+        - name: file
+          in: path
+          description: The name of the file to be accessed
+          required: true
+          type: string
+        - name: content
+          in: body
+          description: The new content to be written to the file
+          required: true
+          schema:
+            $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: Contains a message indicating if the content was written to the inventory
+          schema:
+            $ref: "#/definitions/PutResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Creates a new inventory
+      operationId: postInventory
+      parameters:
+        - name: file
+          in: path
+          description: The name of the file to be created
+          required: true
+          type: string
+        - name: content
+          in: body
+          description: The contents of the inventory
+          required: true
+          schema:
+            $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: Contains a message indicating if creation of the inventory succeeded
+          schema:
+            $ref: "#/definitions/PostResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: deletes an existing inventory
+      operationId: deleteInventory
+      parameters:
+        - name: file
+          in: path
+          description: The name of the file to be removed
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Contains a message indicating if the inventory was removed
+          schema:
+            $ref: "#/definitions/DeleteResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+# Standard definitions for Plans, Inventories
+  ListResponse:
+    required:
+      - files
+    properties:
+      files:
+        type: array
+        items:
+          type: string
+  GetResponse:
+    required:
+      - content
+    properties:
+      content:
+        type: string
+  PutResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  PostResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  PostBody:
+    properties:
+      content:
+        type: string
+  DeleteResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+# global definitions
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

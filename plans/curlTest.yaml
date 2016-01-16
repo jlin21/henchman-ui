@@ -1,0 +1,23 @@
+name: "Plan with curl"
+vars:
+   service: iptables
+hosts:
+  - test
+tasks:
+  - name: "Test xml Curl"
+    curl: url="http://ci.apigeng.com/v1/data/1k.xml" http="GET" loglevel=debug
+    register: second
+  - name: "Test json Curl"
+    curl: url="http://ci.apigeng.com/v1/data/1k.json" http="GET" 
+    register: third
+  - name: "Test Curl"
+    curl: url="http://httpbin.org/ip" http="GET"
+    register: first
+    debug: true
+  - name: "Test bad echo"
+    shell: cmd="echo &(*&@^"
+    debug: true
+    when: 'vars.current_hostname == "192.168.33.11"' 
+  - name: "Test Shell"
+    shell: cmd="echo {{ vars.current_hostname }}"
+    debug: true

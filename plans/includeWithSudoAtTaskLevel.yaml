@@ -1,0 +1,7 @@
+---
+name: "Sample plan"
+tasks:
+  - name: task1
+    action: cmd="ls -al"
+  - name: "included tasks" 
+    include: test/tasks/withSudo.yaml

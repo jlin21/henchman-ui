@@ -1,0 +1,7 @@
+name: "Test Serf"
+hosts:
+  - test
+tasks:
+  - name: "Copy serf"
+    copy: src="bin/serf" dest="/usr/local/bin"
+    sudo: true

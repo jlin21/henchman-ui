@@ -1,0 +1,6 @@
+name: "Plan whatevs"
+hosts:
+  - individual
+tasks:
+  - name: "test"
+    test: cmd="echo hello"

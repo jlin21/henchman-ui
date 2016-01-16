@@ -1,0 +1,17 @@
+name: "Yum test"
+sudo: true
+debug: true
+hosts:
+  - individual
+tasks:
+  - name: "Install package uno"
+    yum: name="mansss123*s" state="present"
+
+  - name: "Install package dos"
+    yum: name="vim" state="present"
+
+  - name: "Install package"
+    yum: name="vim" state="absent"
+  
+  - name: "Print tmrrw"
+    shell: cmd="echo mañana"

@@ -1,0 +1,6 @@
+{
+  "henchman": {
+    "plans": "../plans/",
+    "inventories": "../inventories/"
+  }
+}

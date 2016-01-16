@@ -1,0 +1,10 @@
+---
+name: "Plan with single Include"
+hosts:
+  - nginx.*
+
+tasks:
+  - name: task1
+    action: cmd="ls -al"
+  - name: "include tasks"
+    include: test/tasks/noInclude.yaml
