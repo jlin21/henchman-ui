@@ -88,7 +88,6 @@ function execPlan(req, res) {
   var inventory = req.swagger.params.inventory.value
   var invPath = invDir + inventory
 
-  /*
   var exec = require('child_process').exec
   var cmd = util.format("./%s exec %s --inventory %s --modules %s", 
       config.get("henchman.exec"), planPath, invPath, modDir)
@@ -96,11 +95,10 @@ function execPlan(req, res) {
       if (err) {
         return res.status(400).send({'message': JSON.stringify(err)})
       }
-      console.log(stdout)
+      res.status(200).send({'message': stdout})
   });
 
-  res.status(200).send({'message': "success"})
-  */
+  /*
   if (henchLock) {
     return res.status(400).send({'message': 'henchman is running'})
   }
@@ -128,6 +126,7 @@ function execPlan(req, res) {
     henchLock = 0
   });
   res.status(200).send({'message': 'henchman has started'})
+  */
 }
 
 function getExecStdout(req, res) {
