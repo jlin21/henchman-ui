@@ -1,6 +1,6 @@
 name: "Test Serf"
 hosts:
-  - test
+  - testsssss
 tasks:
   - name: "Copy serf"
     copy: src="bin/serf" dest="/usr/local/bin"

@@ -43,6 +43,8 @@
             "vars"
           ]
         };
+        $scope.henchmanStdout = ""
+
         $scope.listFiles = function(fileType) {
           if ($scope.fileOptions.options.indexOf(fileType) >= 0)  {
             $http.get(HENCHMAN_API.url+fileType)
@@ -59,7 +61,7 @@
             .then(function(res) {
                 $scope.filesList.selected.content = res.data.content;
               }, function(errRes) {
-                  alert(errRes.data.message)
+                alert(errRes.data.message)
             });
         }
         $scope.updateFileContent = function(fname) {
@@ -71,6 +73,31 @@
                 }, function(errRes) {
                   alert(errRes.data.message)
               });
+         }
+         $scope.executePlan = function(planName, invName) {
+           var getQuery = HENCHMAN_API.url+$scope.fileOptions.selected+"/exec/"+planName+"?inventory="+invName
+           $http.get(getQuery)
+            .then(function(res) {
+                var checker = getStdout()
+                console.log("here is" + checker)
+                while (checker) {
+                  checker = getStdout()
+                }
+              }, function(errRes) {
+                alert(errRes.data.message)
+            });
+         }
+         var getStdout = function() {
+           var getQuery = HENCHMAN_API.url+$scope.fileOptions.selected+"/exec"
+           $http.get(getQuery)
+            .then(function(res) {
+                $scope.henchmanStdout += res.data.data
+                console.log($scope.henchmanStdout)
+                return res.data.status
+              }, function(errRes) {
+                alert(errRes.data.message)
+                return 0
+            });
          }
       });
     </script>
@@ -107,13 +134,24 @@
           <!-- button to save file -->
           <br>
           <button class="btn btn-default" ng-click="updateFileContent(filesList.selected.name)">save</button>
+
+          <!-- button to execute plan -->
+          <br>
+          <br>
+          <button ng-show="fileOptions.selected == 'plans' && filesList.selected.name != 'None'" class="btn btn-default" ng-click="executePlan(filesList.selected.name, 'testInventory.yaml')">execute</button>
         </div>
+
         <!-- shows the "text editor" -->
         <div class="col-lg-8">
-          <textarea ng-model="filesList.selected.content" rows="50" cols="75">
+          <textarea ng-model="filesList.selected.content" rows="30" cols="75">
             {{ filesList.selected.content }}
           </textarea>
         </div>
+      </div>
+
+      <!-- second row -->
+      <div class="row">
+          {{ henchmanStdout }}
       </div>
     </div>
   </body>

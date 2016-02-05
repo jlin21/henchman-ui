@@ -1,6 +1,8 @@
 {
   "henchman": {
     "plans": "../plans/",
-    "inventories": "../inventories/"
+    "inventories": "../inventories/",
+    "modules": "../modules/",
+    "exec": "../henchman"
   }
 }

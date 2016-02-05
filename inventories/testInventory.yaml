@@ -1,0 +1,21 @@
+groups:
+  test:
+    hosts:
+      - 192.168.33.10
+      - 192.168.33.11
+    vars:
+      testVar: hello
+      henchman_username: "vagrant"
+  individual:
+    hosts:
+      - 192.168.33.10
+    vars:
+      testVar: hello
+  second:
+    hosts:
+      - 192.168.33.11
+  third:
+    hosts:
+      - 192.168.33.12
+global_vars:
+  henchman_username: "vagrant"

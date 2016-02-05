@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'json'
+params = ''
+while line = $stdin.gets
+  params = JSON.parse(line)
+end
+
+result = {}
+ls_result_with_error = ""
+possible_states = ["absent", "present"]
+
+yum_subcommands = {
+    "present"=> "install",
+    "absent"=>"remove",
+}
+
+def run_cmd(cmd)
+  ls_result_with_error = ""
+  overall_cmd = [cmd.split(" "), :err =>[:child, :out]].flatten
+  IO.popen(overall_cmd) {|ls_io|
+    ls_result_with_error = ls_io.read
+  }
+  return {"exit_status" => $?,
+        "cmd_result" => ls_result_with_error}
+end
+
+def is_installed?(name,version)
+  cmd = "rpm -qa #{name}"
+  output = run_cmd(cmd)
+  output["cmd_result"].split("\n") do |pkg|
+    if pkg.start_with?(name)
+      if version != ""
+        if pkg.end_with?(version)
+          return true
+        else
+          return false
+        end
+      end
+    end
+  end
+  return false
+end
+
+begin
+  name = params['name']
+  version = params['version']
+  state = params['state'] || "present"
+  if version == "latest"
+    version = ''
+  end
+  if not possible_states.include?(state)
+    raise "Valid states are one of #{possible_states.join(',')}"
+  end
+  full_pkgname = name
+  if version != ""
+    full_pkgname = name + "-" + version
+  end
+  installed = is_installed?(name, version)
+  if installed and state == "present"
+    result['msg'] = "Package #{full_pkgname} already present"
+    result['status'] = "ok"
+  elif (not installed) and (state == "absent")
+    result['msg'] = "Package #{full_pkgname} already absent"
+    result['status'] = "ok"
+  else
+    sub_command = yum_subcommands[state]
+    command = "yum #{sub_command} -y #{full_pkgname}"
+    output = run_cmd(command)
+    if output["exit_status"].exitstatus > 0
+      raise output["cmd_result"]
+    else
+      result['status'] = "changed"
+      result['msg'] = "State of package #{full_pkgname} changed"
+      result['output'] = output
+    end
+  end
+rescue Exception => e
+  result['status'] = "error"
+  result['msg'] = "Error occurred while installing package #{full_pkgname}"
+  result['output'] = e
+end
+#print result.to_json
+written = $stdout.write(result.to_json)
+`echo #{written} > /tmp/yum_bytes`
