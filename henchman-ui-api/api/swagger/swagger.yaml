@@ -154,10 +154,10 @@ paths:
           description: Has the output of the executed plan
           schema:
             required:
-              - data
+              - message
               - status
             properties:
-              data:
+              message:
                 type: string
               status:
                 type: integer

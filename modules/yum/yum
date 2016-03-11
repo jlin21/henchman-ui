@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+import sys
+import os
+import json
+import subprocess
+
+yum_subcommands = {
+    "present": "install",
+    "absent": "remove",
+}
+
+# Params for this module
+# package: package name that will be installed via yum
+def is_installed(name, version):
+    command = ["rpm", "-qa"] + name.split()
+    p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, err = p.communicate()
+    for pkg in output.split("\n"):
+        if pkg.startswith(name):
+            if version:
+                if pkg.endswith(version):
+                    return True
+            else:
+                return True
+    return False
+
+params = json.loads(sys.stdin.read())
+result = {}
+possible_states = ["absent", "present"]
+try:
+    name = params.get('name')
+    version = params.get('version')
+    state = params.get('state', 'present')
+    # If version is latest. Just ignore it
+    if version == 'latest':
+        version = None
+    # check if state provided is valid
+    if state not in possible_states:
+        raise Exception("Valid states are one of %s " % ','.join(possible_states))
+
+    full_pkgname = name
+    if version:
+        full_pkgname = name + "-" + version
+
+    installed = is_installed(name, version)
+    if installed and state == "present":
+        result['msg'] = "Package %s already present" % full_pkgname
+        result['status'] = "ok"
+    elif not installed and state == "absent":
+        result['msg'] = "Package %s already absent" % full_pkgname
+        result['status'] = "ok"
+    else:
+        sub_command = yum_subcommands[state]
+        command = ["yum", sub_command, "-y", full_pkgname]
+        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, err = p.communicate()
+        if p.returncode > 0:
+            raise Exception(err.decode('utf-8'))
+        else:
+            output = output.decode('utf-8')
+            result['status'] = "changed"
+            result['msg'] = "State of package %s changed - %s" % (name, output)
+            result['output'] = output
+except Exception, e:
+    result['status'] = "error"
+    result['msg'] = "Error occurred while installing package %s - %s" % (name, e.message)
+    result['output'] = e.message
+
+print json.dumps(result)

@@ -1,0 +1,108 @@
+#!/usr/bin/env python
+
+# Shell module to execute
+import sys
+import json
+import os
+import os.path
+import subprocess
+import shlex
+
+params = json.load(sys.stdin)
+
+class SkipTaskException(Exception):
+    """Dummy exception to force a task skip"""
+    pass
+
+
+def construct_pipes(cmd, env):
+    """Given a command string figure out if there are pipes and
+    open a pipeline of sorts and return it"""
+    cmd_list = shlex.split(cmd, comments=True)
+    splits = [[]]
+    for a in cmd_list:
+        if a != '|':
+            splits[-1].append(a)
+        else:
+            splits.append([])
+    pipes = []
+    last_stdout = None
+    for cmd_list in splits:
+        p = subprocess.Popen(cmd_list,
+                             env=env,
+                             stdin=last_stdout,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
+        if last_stdout: # stdout of the last pipe is the stdin of the current 'p'
+            last_stdout.close() # Allow the next pipe to receive SIGPIPE
+        last_stdout = p.stdout
+        pipes.append(p)
+    return pipes
+
+def parse_env_vars(line):
+    """Returns a dictionary of env variables
+    NOTE: How about duplicate keys?
+    FIXME: Breaks if there are '=' that within the value itself. Need a way to escape it.
+    """
+    split_line = [x.strip() for x in line.split()]
+    vars = {}
+    for s in split_line:
+        splitvars = s.split("=")
+        try:
+            k, v = splitvars[0].strip(), splitvars[1].strip()
+        except:
+            raise Exception("env vars should be in k=v format")
+        vars[k] = v
+    return vars
+
+# Params for this module
+# chdir: cd into the given directory to execute the shell command
+# cmd: The command to run. Wrapped by quotes if there are spaces
+# creates: The file/directory that this cmd creates. Useful in cases where tasks has to be skipped the next time it's run.
+#          At the end of the command execution the path in creates is checked to see if the file/directory was created.
+#          If not, raises a failure.
+# loglevel: if debug, it shows you the entire output as part of 'output' key
+result = {}
+pipes = []
+try:
+    cmd = params.get("cmd")
+    creates = params.get("creates")
+    if not cmd:
+        raise Exception("Required parameter 'cmd' not found")
+    
+    if creates and os.path.exists(creates):
+        raise SkipTaskException("'{0}' exists. Nothing to do".format(creates))
+                    
+    os_env = os.environ.copy()
+    parsed_env = parse_env_vars(params.get("env", ""))
+    os_env.update(parsed_env)
+    
+    pipes = construct_pipes(cmd, os_env)
+    last_pipe = pipes[-1]
+    chdir = params.get("chdir")
+    # FIXME: Error out if chdir cannot be stat'd
+    if chdir:
+        os.chdir(chdir)        
+    stdout, stderr = last_pipe.communicate()
+    # Check if the command created the file defined in creates
+    if creates and not os.path.exists(creates):
+        raise Exception("Expected {0} to be created.".format(creates))
+    
+    result["status"] = "changed"
+    result["msg"] = "exec'ed command"
+    if last_pipe.returncode > 0:
+        result["status"] = "failure"
+    result["output"] = {"stderr": stderr, "stdout": stdout}    
+except SkipTaskException as e:
+    result["status"] = "skipped"
+    result["msg"] = e.message
+
+except Exception as e:
+    result["status"] = "error"
+    result["msg"] = "Command exec'ed with error - %s" % str(e)
+
+json_result = json.dumps(result)
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+
+sys.stdout.write(json_result)
+sys.stdout.flush()

@@ -1,0 +1,6 @@
+name: "insert plan name"
+hosts:
+  - insert host group
+vars:
+  key: val
+tasks:

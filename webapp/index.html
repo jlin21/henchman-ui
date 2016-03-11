@@ -6,6 +6,29 @@
     <!-- Bootstrap css -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/cerulean/bootstrap.min.css" rel="stylesheet" integrity="sha256-Ucf/ylcKTNevYP6l7VNUhGLDRZPQs1+LsbbxuzMxUJM= sha512-FW2XqnqMwERwg0LplG7D64h8zA1BsxvxrDseWpHLq8Dg8kOBmLs19XNa9oAajN/ToJRRklfDJ398sOU+7LcjZA==" crossorigin="anonymous">
+    <style>
+      .red-circle {
+         background-color: #ff0000;
+         height: 16px;
+         -moz-border-radius:8px;
+         -webkit-border-radius: 8px;
+         width: 16px;
+      }
+      .green-circle {
+         background-color: #00ff00;
+         height: 16px;
+         -moz-border-radius:8px;
+         -webkit-border-radius: 8px;
+         width: 16px;
+      }
+      .grey-circle {
+         background-color: #737373;
+         height: 16px;
+         -moz-border-radius:8px;
+         -webkit-border-radius: 8px;
+         width: 16px;
+      }
+    </style>
 
     <!-- Bootstrap js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -13,9 +36,14 @@
 
     <!-- Bootstrap angular.js -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.1/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- angular css -->
+    <link href="resizable.css" rel="stylesheet">
 
     <!-- angular scripts -->
     <script src="ansi2html.js"></script>
+    <script src="resizable.js"></script>
     <script src="myApp.js"></script>
   </head>
   <body ng-app="myApp">
@@ -23,7 +51,7 @@
       <div class="row">
 
         <!-- options col -->
-        <div class="col-lg-4">
+        <div class="col-lg-3">
 
           <!-- dropdown to select file type -->
           <h4>Select a file type<h4>
@@ -55,19 +83,128 @@
           <br>
           <br>
           <button ng-show="fileOptions.selected == 'plans' && filesList.selected.name != 'None'" class="btn btn-default" ng-click="executePlan(filesList.selected.name, 'testInventory.yaml')">execute</button>
+
+          <!-- button to create a new plan -->
+          <br>
+          <div class="input-group"
+           ng-show="fileOptions.selected == 'plans' && filesList.selected.name == 'None'">
+            <span class="input-group-btn">
+              <button 
+               ng-click="createPlan(planName)"
+               class="btn btn-default"
+               type="button">
+               create
+              </button>
+            </span>
+            <input type="text" class="form-control" ng-model="planName" placeholder="">
+          </div>
+          
+          <br>
+          <!-- button to add task -->
+          <div class="row" ng-show="fileOptions.selected == 'plans' && filesList.selected.name != 'None'">
+            <button type="button" class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Toggle Add Task</button>
+            <hr>
+            <div uib-collapse="isCollapsed">
+              <button
+               ng-click="addTask(task)"
+               class="btn btn-default"
+               type="button">
+               Add Task
+              </button>
+              <form>
+                <div class="input-group">
+                  <span class="input-group-addon">name</span>
+                  <input type="text" class="form-control" ng-model="task.name" required="true">
+                </div>
+
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-model="module.selected">{{ module.selected }}<span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li ng-repeat="mod in module.list | orderBy:'mod'">
+                        <a ng-click="module.selected = mod">{{ mod }}</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <input type="text" class="form-control" ng-model="task.mod" required="true">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">debug</span>
+                  <input type="text" class="form-control" ng-model="task.debug">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">ignore_errors</span>
+                  <input type="text" class="form-control" ng-model="task.ignoreErrors">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">local</span>
+                  <input type="text" class="form-control" ng-model="task.local">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">register</span>
+                  <input type="text" class="form-control" ng-model="task.register">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">retry</span>
+                  <input type="text" class="form-control" ng-model="task.retry">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">sudo</span>
+                  <input type="text" class="form-control" ng-model="task.sudo">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">when</span>
+                  <input type="text" class="form-control" ng-model="task.when">
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
 
         <!-- shows the "text editor" -->
-        <div class="col-lg-8">
-          <textarea ng-model="filesList.selected.content" rows="30" cols="75">
-            {{ filesList.selected.content }}
-          </textarea>
+        <div class="col-lg-6">
+          <div class="row" resizable r-directions="['bottom']">
+            <textarea ng-model="filesList.selected.content" style="width:500px; height:60vh;">
+              {{ filesList.selected.content }}
+            </textarea>
+          </div>
+          <div class="row">
+            <div style="width:500px; height:40vh; overflow-y: scroll; overflow-x: scroll; border:1px solid black;">
+              <p ng-bind-html="henchmanStdout"></p>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- second row -->
-      <div class="row">
-        <p ng-bind-html="henchmanStdout"></p>
+        <!-- show task data -->
+        <div class="col-lg-3">
+          <div class="row" ng-show="henchmanStdout != ''">
+            <div class="dropdown">
+              <a class="btn btn-default" data-toggle="dropdown" href="#">{{ selectedTask.name }}<b class="caret"></b></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownTasksList">
+                <li ng-repeat="task in tasksList">
+                  <a ng-click="selectedTask.name = task.name; selectedTask.data = task.data; selectedTask.isSelected = true">{{ task.name }}</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+            </div>
+            <div ng-repeat="item in selectedTask.data" ng-if="$index % 4 == 0" class="row">
+              <div class="col-xs-3">
+                <p uib-popover="{{ selectedTask.data[$index].host }}" popover-trigger="mouseenter" class="{{ selectedTask.data[$index].color }}"></p>
+              </div>
+              <div class="col-xs-3" ng-if="selectedTask.data.length > ($index + 1)">
+                <p uib-popover="{{ selectedTask.data[$index + 1].host }}" popover-trigger="mouseenter" class="{{ selectedTask.data[$index + 1].color }}"></p>
+              </div>
+              <div class="col-xs-3" ng-if="selectedTask.data.length > ($index + 2)">
+                <p uib-popover="{{ selectedTask.data[$index + 2].host }}" popover-trigger="mouseenter" class="{{ selectedTask.data[$index + 2].color }}"></p>
+              </div>
+              <div class="col-xs-3" ng-if="selectedTask.data.length > ($index + 3)">
+                <p uib-popover="{{ selectedTask.data[$index + 3].host }}" popover-trigger="mouseenter" class="{{ selectedTask.data[$index + 3].color }}"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </body>
