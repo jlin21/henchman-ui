@@ -1,3 +1,4 @@
+[TOC]
 Henchman User Interface
 ===================
 
