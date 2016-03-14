@@ -178,30 +178,31 @@
         <!-- show task data -->
         <div class="col-lg-3">
           <div class="row" ng-show="henchmanStdout != ''">
-            <div class="dropdown">
-              <a class="btn btn-default" data-toggle="dropdown" href="#">{{ selectedTask.name }}<b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownTasksList">
-                <li ng-repeat="task in tasksList">
-                  <a ng-click="selectedTask.name = task.name; selectedTask.data = task.data; selectedTask.isSelected = true">{{ task.name }}</a>
-                </li>
-              </ul>
-            </div>
-            <div>
-            </div>
-            <div ng-repeat="item in selectedTask.data" ng-if="$index % 4 == 0" class="row">
-              <div class="col-xs-3">
-                <p uib-popover="{{ selectedTask.data[$index].host }}" popover-trigger="mouseenter" class="{{ selectedTask.data[$index].color }}"></p>
-              </div>
-              <div class="col-xs-3" ng-if="selectedTask.data.length > ($index + 1)">
-                <p uib-popover="{{ selectedTask.data[$index + 1].host }}" popover-trigger="mouseenter" class="{{ selectedTask.data[$index + 1].color }}"></p>
-              </div>
-              <div class="col-xs-3" ng-if="selectedTask.data.length > ($index + 2)">
-                <p uib-popover="{{ selectedTask.data[$index + 2].host }}" popover-trigger="mouseenter" class="{{ selectedTask.data[$index + 2].color }}"></p>
-              </div>
-              <div class="col-xs-3" ng-if="selectedTask.data.length > ($index + 3)">
-                <p uib-popover="{{ selectedTask.data[$index + 3].host }}" popover-trigger="mouseenter" class="{{ selectedTask.data[$index + 3].color }}"></p>
-              </div>
-            </div>
+            <table border="1">
+              <tr>
+                <th>Tasks</th>
+                <th>Hosts</th>
+              </tr>
+              <tr ng-repeat="task in tasksList" ng>
+                <td>{{ task.name }}</td>
+                <td>
+                  <div ng-repeat="item in task" ng-if="$index % 4 == 0" class="row">
+                    <div class="col-xs-3">
+                      <p uib-popover="{{ task.data[$index].host }}" popover-trigger="mouseenter" class="{{ task.data[$index].color }}"></p>
+                    </div>
+                    <div class="col-xs-3" ng-if="task.data.length > ($index + 1)">
+                      <p uib-popover="{{ task.data[$index + 1].host }}" popover-trigger="mouseenter" class="{{ task.data[$index + 1].color }}"></p>
+                    </div>
+                    <div class="col-xs-3" ng-if="task.data.length > ($index + 2)">
+                      <p uib-popover="{{ task.data[$index + 2].host }}" popover-trigger="mouseenter" class="{{ task.data[$index + 2].color }}"></p>
+                    </div>
+                    <div class="col-xs-3" ng-if="task.data.length > ($index + 3)">
+                      <p uib-popover="{{ task.data[$index + 3].host }}" popover-trigger="mouseenter" class="{{ task.data[$index + 3].color }}"></p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
 
