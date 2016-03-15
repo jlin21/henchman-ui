@@ -1,5 +1,5 @@
-<div class="toc">
-
+Table of Contents
+=================
 *   [Henchman User Interface](#henchman-user-interface)
     *   [What is it](#what-is-it)
     *   [Purpose](#purpose)
@@ -25,10 +25,8 @@
                 *   [Why Swagger?](#why-swagger)
                 *   [Limitations, proposed solutions, and insights](#limitations-proposed-solutions-and-insights)
     *   [Contributing](#contributing)
-        *   *   *   [Web application task](#web-application-task)
-                *   [API tasks](#api-tasks)
-
-</div>
+          *   [Web application task](#web-application-task)
+          *   [API tasks](#api-tasks)
 
 # Henchman User Interface
 
