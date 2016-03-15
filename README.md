@@ -41,7 +41,7 @@
 <li><a href="#contributing">Contributing</a><ul>
 <li><ul>
 <li><ul>
-<li><a href="#web-application-task">Web application task</a></li>
+<li><a href="#web-application-tasks">Web application task</a></li>
 <li><a href="#api-tasks">API tasks</a></li>
 </ul>
 </li>
@@ -298,7 +298,7 @@ By going to that URL Henchman will be executed and a message will confirm or den
 
 <p>As mentioned above a limitation with this API is that only one Henchman process can be run at a time, and there is a general endpoint to retrieve the output and status of any Henchman process.  If users wanted to start another process it could not even be put into a queue.  There are other factors to this limitation such as if the server hosting the API is capable of running more than one Henchman process at a time.</p>
 
-<p>However, a solution to this limitation is having a queueing system in place (this would have to go into the controller and model logic).  When the server receives a request to run a Henchman process it should place the process into a queue to be run after the currently running process, or (if the system allows) run it in parallel.  In addition, the response schema should contain a message notifying the user if the process is running or in queue, and a unique index to query the current status of the process.  The URL to retrieve the output and status of the Henchman process should be changed from a single bottle necked location of  <code>localhost:10010/v0/plans/exec</code> to <code>localhost:10010/v0/plans/exec?index=some_num</code>.   This way the user can check the status and output of any Henchman process.</p>
+<p>However, a solution to this limitation is having a queueing system in place (this would have to go into the controller and model logic).  When the server receives a request to run a Henchman process it should place the process into a queue to be run after the currently running process, or (if the system allows) run it in parallel.  In addition, the response schema should contain a message notifying the user if the process is running or in queue, and a unique index to query the current status of the process.  The URL to retrieve the output and status of the Henchman process should be changed from a single bottle necked location of  <code>localhost:10010/v0/plans/exec</code> to <code>localhost:10010/v0/plans/exec?index=some-num</code>.   This way the user can check the status and output of any Henchman process.</p>
 
 <hr>
 
@@ -310,7 +310,7 @@ By going to that URL Henchman will be executed and a message will confirm or den
 
 
 
-<h5 id="web-application-task">Web application task</h5>
+<h5 id="web-application-tasks">Web application tasks</h5>
 
 <ul>
 <li>Find better placement of features</li>
