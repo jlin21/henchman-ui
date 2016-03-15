@@ -65,11 +65,9 @@
 
 <h2 id="purpose">Purpose</h2>
 
-<p>Currently, the only way to use Henchman is by using its command line interface.  Although the command line is the preferred method for many administrators, a visual user interface can provide more options and ease of use for administrators not familiar with a CLI.  Thus, the purpose of this project is to create a RESTful API for people to utilize Henchman, and an example UI to accompany it.  </p>
+<p>Currently, the only way to use Henchman is by using its command line interface (CLI).  Although the command line is the preferred method for many administrators, a visual user interface can provide more options and ease of use for administrators not familiar with a CLI.  Thus, the purpose of this project is to create a RESTful API for people to utilize Henchman, and an example UI to accompany it.  </p>
 
 <hr>
-
-
 
 <h2 id="how-to-use">How to use</h2>
 
@@ -83,7 +81,9 @@
 
 <h2 id="components">Components</h2>
 
-<p>General tools used</p>
+<p>There are only two components to this tool, the web application frontend and the RESTful API backed.  The components are two separate services where the web application utilizes the API to use Henchman.  If the API was not running the web application would not be able to function.  Finally, looping back to the purpose, the web application is meant to be a vanilla example for people to get a grasp of how to use the API and what features may be good for a Henchman UI.</p>
+
+<p>General tools used while developing both services</p>
 
 <ul>
 <li>Javascript</li>
@@ -91,7 +91,89 @@
 <li>Npm  (v2.11.3)</li>
 </ul>
 
+<h3 id="web-application">Web application</h3>
 
+<hr>
+
+
+
+<h4 id="tools-used">Tools used</h4>
+
+<ul>
+<li>angular-js</li>
+<li>bootstrap</li>
+<li>html</li>
+</ul>
+
+
+
+<h4 id="overview">Overview</h4>
+
+<p>The web application is SPA with only one view, and is created using angular-js as the front end framework.  In addition it also utilizes vanilla bootstrap and the angular supported bootstrap module for css and js.  As mentioned before this application utilizes the Henchman-ui API to use Henchman, and contains features that are practical for a user interface meant for Henchman.</p>
+
+
+
+<h4 id="list-of-features">List of features</h4>
+
+<ul>
+<li>Construction and modification of plans, inventories, tasks, vars files</li>
+<li>Henchman output</li>
+<li>Task status bar</li>
+<li>Plan setup wizard</li>
+</ul>
+
+
+
+<h5 id="construction-and-modification-of-plans-inventories-tasks-vars-files">Construction and modification of plans, inventories, tasks, vars files</h5>
+
+<p>Construction and modification of plans, inventories, task, and vars files is self explanatory as why it’s needed in this UI.  Here is what a base of what the UI looks like, this feature is promptly located on the right hand side and the area to modify text is located in the center.</p>
+
+<p><img src="https://lh3.googleusercontent.com/gNwctkuAXidcNUXvNlC1VlEO7_BLTs6xE58_L29ojNKZlJHWn0b790q6eJ8wMlxFai3Y=s0" alt="base" title="base.png"></p>
+
+
+
+<h5 id="henchman-output">Henchman output</h5>
+
+<p>The Henchman output box is directly under the general text edit area.  This box allows users to see what is the output of the Henchman process.</p>
+
+<p><img src="https://lh3.googleusercontent.com/8BFvSD1fvfrSb__YUQibaico13pk31x0i7miCNYQlX54JTQRXoHsw8Zndzcg9jxTxUEy=s0" alt="" title="henchman-output.png"></p>
+
+
+
+<h5 id="plan-setup-wizard">Plan setup wizard</h5>
+
+<p>The plan setup wizard helps users generate plans by creating a skeleton with common fields.  In addition, there is also a task generator which helps users create tasks by showing the supported fields without viewing the documentation and the available modules.  The purpose of this wizard is to help users grasp an idea of what a plan and task list should look like.</p>
+
+<p>Users can create a plan skeleton file when “None” is selected.</p>
+
+<p><img src="https://lh3.googleusercontent.com/EQVGPdzhoygbluhrJ9gipinr9FWlHncckvt9o2vM6ukoMpYgka49DeuN_FtPFIaKJdV0=s0" alt="" title="plan-create.png"></p>
+
+<p><br>
+After creating a file a skeleton of a plan is created</p>
+
+<p><img src="https://lh3.googleusercontent.com/45erbGKjPMb2wcFqAlXZc9wMqRlLpT2GWhhILxwulsdZYkIUqJ2dqMqy84IIotJYjyyw=s0" alt="" title="plan-template.png"></p>
+
+<p><br>
+Users can insert a task by selecting “Toggle Add Task” and proceed to fill in the task parameters.</p>
+
+<p><img src="https://lh3.googleusercontent.com/Ld9tIh1bmW1kGD4BpT2XQfxemnCJr3ii6GC_KKqTNdTl8CZro3JJ4wcySH4p4pPjBZJ7=s0" alt="" title="add-task.png"></p>
+
+
+
+<h5 id="task-status-bar">Task status bar</h5>
+
+<p>The task status bar allows the user to see the status of each machine related to the current task running or the tasks that have already completed running.  This allows the user to see the status of the executed plan without having to scroll through the output.  The output of Henchman can be quick and may contain long messages at times.</p>
+
+<p>Users will see a table including the task state of each host.  The statuses are represented by 3 colors: red (failure or error), green (changed or okay), and grey (generally skipped).  In addition, the tasks appear in the table in the order they were executed.</p>
+
+<p><img src="https://lh3.googleusercontent.com/u6wRVOhv9QIRBhdC5mIiz7CjRisZ7-pol6QgqmJTuA8vu-tTpA4qkM108TdHZtH3-NVD=s0" alt="" title="task-status.png"></p>
+
+<p><br>
+You can highlight a colored circle to see which host contains that status.</p>
+
+<p><img src="https://lh3.googleusercontent.com/Fuh6sG65v99qYR4Rns7a5zXNm_3lKHL5kW36u1r7QsjFQ4Kv8BKREbtybb4qM6JH-2Nq=s0" alt="" title="status-hover.png"></p>
+
+<hr>
 
 <h3 id="api">API</h3>
 
@@ -210,115 +292,29 @@ By going to that URL Henchman will be executed and a message will confirm or den
 
 <p>However, a solution to this limitation is having a queueing system in place (this would have to go into the controller and model logic).  When the server receives a request to run a Henchman process it should place the process into a queue to be run after the currently running process, or (if the system allows) run it in parallel.  In addition, the response schema should contain a message notifying the user if the process is running or in queue, and a unique index to query the current status of the process.  The URL to retrieve the output and status of the Henchman process should be changed from a single bottle necked location of  <code>localhost:10010/v0/plans/exec</code> to <code>localhost:10010/v0/plans/exec?index=some_num</code>.   This way the user can check the status and output of any Henchman process.</p>
 
+<hr>
+
+<h2 id="contributing">Contributing</h2>
+
+<p>There are some pending tasks which need to be completed for both the web application and API;  however, the best way to contribute is to create your own UI with the feature set described in the web application section in mind!</p>
+
+<p>Here are some pending tasks for each component</p>
 
 
-<h4 id="to-do">To do</h4>
+
+<h5 id="web-application-task">Web application task</h5>
+
+<ul>
+<li>Find better placement of features</li>
+<li>spice things up with better css and js libraries</li>
+</ul>
+
+
+
+<h5 id="api-tasks">API tasks</h5>
 
 <ul>
 <li>Finish endpoints for tasks and vars</li>
 <li>Add options as params for Henchman executable</li>
 <li>Apply queuing system and update URLs</li>
 </ul>
-
-<hr>
-
-<h3 id="web-application">Web application</h3>
-
-<hr>
-
-
-
-<h4 id="tools-used-1">Tools used</h4>
-
-<ul>
-<li>angular-js</li>
-<li>bootstrap</li>
-<li>html</li>
-</ul>
-
-
-
-<h4 id="overview-1">Overview</h4>
-
-<p>The web application is SPA with only one view, and is created using angular-js as the front end framework.  In addition it also utilizes vanilla bootstrap and the angular supported bootstrap module for css and js.  As mentioned before this application utilizes the Henchman-ui API to use Henchman, and contains features that are practical for a user interface meant for Henchman.</p>
-
-
-
-<h4 id="list-of-features">List of features</h4>
-
-<ul>
-<li>Construction and modification of plans, inventories, tasks, vars files</li>
-<li>Henchman output</li>
-<li>Task status bar</li>
-<li>Plan setup wizard</li>
-</ul>
-
-
-
-<h5 id="construction-and-modification-of-plans-inventories-tasks-vars-files">Construction and modification of plans, inventories, tasks, vars files</h5>
-
-<p>Construction and modification of plans, inventories, task, and vars files is self explanatory as why it’s needed in this UI.  Here is what a base of what the UI looks like, this feature is promptly located on the right hand side and the area to modify text is located in the center.</p>
-
-<p><img src="https://lh3.googleusercontent.com/gNwctkuAXidcNUXvNlC1VlEO7_BLTs6xE58_L29ojNKZlJHWn0b790q6eJ8wMlxFai3Y=s0" alt="base" title="base.png"></p>
-
-
-
-<h5 id="henchman-output">Henchman output</h5>
-
-<p>The Henchman output box is directly under the general text edit area.  This box allows users to see what is the output of the Henchman process.</p>
-
-<p><img src="https://lh3.googleusercontent.com/8BFvSD1fvfrSb__YUQibaico13pk31x0i7miCNYQlX54JTQRXoHsw8Zndzcg9jxTxUEy=s0" alt="" title="henchman-output.png"></p>
-
-
-
-<h5 id="plan-setup-wizard">Plan setup wizard</h5>
-
-<p>The plan setup wizard helps users generate plans by creating a skeleton with common fields.  In addition, there is also a task generator which helps users create tasks by showing the supported fields without viewing the documentation and the available modules.  The purpose of this wizard is to help users grasp an idea of what a plan and task list should look like.</p>
-
-<p>Users can create a plan skeleton file when “None” is selected.</p>
-
-<p><img src="https://lh3.googleusercontent.com/EQVGPdzhoygbluhrJ9gipinr9FWlHncckvt9o2vM6ukoMpYgka49DeuN_FtPFIaKJdV0=s0" alt="" title="plan-create.png"></p>
-
-<p><br>
-After creating a file a skeleton of a plan is created</p>
-
-<p><img src="https://lh3.googleusercontent.com/45erbGKjPMb2wcFqAlXZc9wMqRlLpT2GWhhILxwulsdZYkIUqJ2dqMqy84IIotJYjyyw=s0" alt="" title="plan-template.png"></p>
-
-<p><br>
-Users can insert a task by selecting “Toggle Add Task” and proceed to fill in the task parameters.</p>
-
-<p><img src="https://lh3.googleusercontent.com/Ld9tIh1bmW1kGD4BpT2XQfxemnCJr3ii6GC_KKqTNdTl8CZro3JJ4wcySH4p4pPjBZJ7=s0" alt="" title="add-task.png"></p>
-
-
-
-<h5 id="task-status-bar">Task status bar</h5>
-
-<p>The task status bar allows the user to see the status of each machine related to the current task running or the tasks that have already completed running.  This allows the user to see the status of the executed plan without having to scroll through the output.  The output of Henchman can be quick and may contain long messages at times.</p>
-
-<p>Users will see a table including the task state of each host.  The statuses are represented by 3 colors: red (failure or error), green (changed or okay), and grey (generally skipped).  In addition, the tasks appear in the table in the order they were executed.</p>
-
-<p><img src="https://lh3.googleusercontent.com/u6wRVOhv9QIRBhdC5mIiz7CjRisZ7-pol6QgqmJTuA8vu-tTpA4qkM108TdHZtH3-NVD=s0" alt="" title="task-status.png"></p>
-
-<p><br>
-You can highlight a colored circle to see which host contains that status.</p>
-
-<p><img src="https://lh3.googleusercontent.com/Fuh6sG65v99qYR4Rns7a5zXNm_3lKHL5kW36u1r7QsjFQ4Kv8BKREbtybb4qM6JH-2Nq=s0" alt="" title="status-hover.png"></p>
-
-<hr>
-
-
-
-<h4 id="to-do-1">To do</h4>
-
-<ul>
-<li>Find better placement of features</li>
-<li>Spice things up with better css and js libraries</li>
-</ul>
-
-<hr>
-
-
-
-<h2 id="contributing">Contributing</h2>
-
-<p>To contribute finish off anything in the To Do section of the components.  Better yet, create your own UI with the feature set described above in mind!</p>
