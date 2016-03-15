@@ -39,9 +39,7 @@
 </ul>
 </li>
 <li><a href="#contributing">Contributing</a><ul>
-<li><ul>
-<li><ul>
-<li><a href="#web-application-tasks">Web application task</a></li>
+<li><a href="#web-application-tasks">Web application tasks</a></li>
 <li><a href="#api-tasks">API tasks</a></li>
 </ul>
 </li>
