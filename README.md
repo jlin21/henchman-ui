@@ -5,9 +5,21 @@
 <li><a href="#purpose">Purpose</a></li>
 <li><a href="#how-to-use">How to use</a></li>
 <li><a href="#components">Components</a><ul>
-<li><a href="#api">API</a><ul>
+<li><a href="#web-application">Web application</a><ul>
 <li><a href="#tools-used">Tools used</a></li>
 <li><a href="#overview">Overview</a></li>
+<li><a href="#list-of-features">List of features</a><ul>
+<li><a href="#construction-and-modification-of-plans-inventories-tasks-vars-files">Construction and modification of plans, inventories, tasks, vars files</a></li>
+<li><a href="#henchman-output">Henchman output</a></li>
+<li><a href="#plan-setup-wizard">Plan setup wizard</a></li>
+<li><a href="#task-status-bar">Task status bar</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#api">API</a><ul>
+<li><a href="#tools-used-1">Tools used</a></li>
+<li><a href="#overview-1">Overview</a></li>
 <li><a href="#how-to-utilize-the-api">How to utilize the API</a><ul>
 <li><a href="#retrieving-contents-of-a-file">Retrieving contents of a file</a></li>
 <li><a href="#executing-henchman-and-retrieving-output">Executing Henchman and retrieving output</a><ul>
@@ -22,25 +34,21 @@
 <li><a href="#limitations-proposed-solutions-and-insights">Limitations, proposed solutions, and insights</a></li>
 </ul>
 </li>
-<li><a href="#to-do">To do:</a></li>
-</ul>
-</li>
-<li><a href="#web-application">Web application</a><ul>
-<li><a href="#tools-used-1">Tools used</a></li>
-<li><a href="#overview-1">Overview</a></li>
-<li><a href="#list-of-features">List of features</a><ul>
-<li><a href="#construction-and-modification-of-plans-inventories-tasks-vars-files">Construction and modification of plans, inventories, tasks, vars files</a></li>
-<li><a href="#henchman-output">Henchman output</a></li>
-<li><a href="#plan-setup-wizard">Plan setup wizard</a></li>
-<li><a href="#task-status-bar">Task status bar</a></li>
-</ul>
-</li>
-<li><a href="#to-do-1">To do</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#contributing">Contributing</a></li>
+<li><a href="#contributing">Contributing</a><ul>
+<li><ul>
+<li><ul>
+<li><a href="#web-application-task">Web application task</a></li>
+<li><a href="#api-tasks">API tasks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
