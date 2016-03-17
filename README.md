@@ -1,11 +1,12 @@
+
 Table of Contents
 =================
 *   [Henchman User Interface](#henchman-user-interface)
-    *   [What is it](#what-is-it)
+    *   [What is it?](#what-is-it?)
     *   [Purpose](#purpose)
-    *   [How to use](#how-to-use)
+    *   [Installation & Setup](#installation-&-setup)
     *   [Components](#components)
-        *   [Web application](#web-application)
+        *   [Web application (front end)](#web-application)
             *   [Tools used](#tools-used)
             *   [Overview](#overview)
             *   [List of features](#list-of-features)
@@ -13,10 +14,10 @@ Table of Contents
                 *   [Henchman output](#henchman-output)
                 *   [Plan setup wizard](#plan-setup-wizard)
                 *   [Task status bar](#task-status-bar)
-        *   [API](#api)
+        *   [API (backend)](#api)
             *   [Tools used](#tools-used-1)
             *   [Overview](#overview-1)
-            *   [How to utilize the API](#how-to-utilize-the-api)
+            *   [How to use the API](#how-to-use-the-api)
                 *   [Retrieving contents of a file](#retrieving-contents-of-a-file)
                 *   [Executing Henchman and retrieving output](#executing-henchman-and-retrieving-output)
                     *   [Executing henchman](#executing-henchman)
@@ -30,9 +31,9 @@ Table of Contents
 
 # Henchman User Interface
 
-## What is it
+## What is it?
 
-Henchman-ui is a web user interface for the orchestration and automation tool, Henchman ([https://github.com/APIgee/Henchman](https://github.com/APIgee/Henchman)). This tool provides a RESTful API to utilize Henchman and a web application which uses the API.
+Henchman-ui is a web user interface for the orchestration and automation tool, Henchman ([https://github.com/APIgee/Henchman](https://github.com/APIgee/Henchman)). To read up more about Henchman, it's components, and how to use it reference the documentation here (https://github.com/apigee/henchman/wiki). This tool provides a RESTful API to use Henchman and a web application which uses the API.
 
 The API hosts various endpoints to create plans, inventories, and other necessary files used by Henchman. It also has endpoints to run the Henchman executable.
 
@@ -44,7 +45,7 @@ We’ll go into more detail about specific components in the sections below.
 
 ## Purpose
 
-Currently, the only way to use Henchman is by using its command line interface (CLI). Although the command line is the preferred method for many administrators, a visual user interface can provide more options and ease of use for administrators not familiar with a CLI. Thus, the purpose of this project is to create a RESTful API for people to utilize Henchman, and an example UI to accompany it.
+Previously, the only way to use Henchman was by using its command line interface (CLI). Although the command line is the preferred method for many administrators, a visual user interface can provide more options and ease of use for administrators not familiar with a CLI. Thus, the purpose of this project is to create a RESTful API for people to use Henchman, and an example UI to accompany it.
 
 * * *
 
@@ -52,14 +53,20 @@ Currently, the only way to use Henchman is by using its command line interface (
 
 To use this tool make sure to have `npm` , `node.js`, and `swagger` on your system. They are a multiple tutorials to install `npm` and `node.js` on the internet. Any of them will work as long as they are the right versions (check the component section for more information on versions). `swagger` can be installed by following the setup instructions in the `swagger-node` package. These instructions can be found by following the link in the “tools used subsection” located under “API”.
 
-After installing the tools run `npm install` in both the `henchman-ui-api/` and `webapp/` folders to get the necessary dependencies. To initialize the API run `swagger project start` in the `henchman-ui-api/` folder, and to initialize the web application run `node server.js` in the `webapp/` folder. In addition, it should be noted this repo contains a Henchman executable along with modules, plans, and inventories. This ui is not dependent on which version of Henchman is being used, but previous versions of Henchman may require a different directory structure for the modules folder.
+After installing the tools run `npm install` in both the `henchman-ui-api/` and `webapp/` folders to get the necessary dependencies. To initialize the API run `swagger project start` in the `henchman-ui-api/` folder, and to initialize the web application run `node server.js` in the `webapp/` folder. In addition, it should be noted this repo contains a Henchman executable along with modules, plans, and inventories. This UI is not dependent on which version of Henchman is being used, but previous versions of Henchman may require a different directory structure for the modules folder.
 
 * * *
 
 ## Components
 
-There are only two components to this tool, the web application frontend and the RESTful API backed. The components are two separate services where the web application utilizes the API to use Henchman. If the API was not running the web application would not be able to function. Finally, looping back to the purpose, the web application is meant to be a vanilla example for people to get a grasp of how to use the API and what features may be good for a Henchman UI.
+There are only two components to this tool the web application frontend and the RESTful API backed. The components are two separate services where the web application uses the API to use Henchman. If the API were not running the web application would not be able to function. Finally, looping back to the purpose, the web application is meant to be a vanilla example for people to get a grasp of how to use the API and what features may be good for a Henchman UI.
 
+<br>
+The figure below shows the relationship of each component.  The grey box represents the server hosting Henchman and the API.  The API represented by the orange box is attached to server to show that it is the layer which mediates between the web application and the server.  Finally, the white cloud is the web application which uses the API.  Both two way arrows show the two way data transfer between the three components.  It should also be noted, there can be multiple "Web Application" clouds interfacing with the API.
+
+![enter image description here](https://lh3.googleusercontent.com/g2ei-zmN-tLgClBv5yV6AXGyLIo-R6VrNzJqwTo5-bge2-3Ia6p7y8oF4wxaT-c0Hbi0=s0 "component-relationship.png")
+
+<br>
 General tools used while developing both services
 
 *   Javascript
@@ -72,13 +79,14 @@ General tools used while developing both services
 
 #### Tools used
 
-*   angular-js
-*   bootstrap
+*   angular-js (v1.4.5)
+*   bootstrap (v3.3.6)
+*   angular-ui-bootstrap (v1.2.1)
 *   html
 
 #### Overview
 
-The web application is SPA with only one view, and is created using angular-js as the front end framework. In addition it also utilizes vanilla bootstrap and the angular supported bootstrap module for css and js. As mentioned before this application utilizes the Henchman-ui API to use Henchman, and contains features that are practical for a user interface meant for Henchman.
+The web application is a single page application (SPA) with one view, and is created using angular-js as the front end framework. In addition it also uses vanilla bootstrap and the angular supported bootstrap module for css and js. As mentioned before this application uses the Henchman-ui API to use Henchman, and contains features that are practical for a user interface meant for Henchman.
 
 #### List of features
 
@@ -89,13 +97,51 @@ The web application is SPA with only one view, and is created using angular-js a
 
 ##### Construction and modification of plans, inventories, tasks, vars files
 
-Construction and modification of plans, inventories, task, and vars files is self explanatory as why it’s needed in this UI. Here is what a base of what the UI looks like, this feature is promptly located on the right hand side and the area to modify text is located in the center.
+To read a detailed documentation of Henchman plans, inventories, tasks, and vars files reference the documentation here (https://github.com/apigee/henchman/wiki).  The figures below will detail the steps on how to edit a file using the UI.  To create a new file reference the "Plan setup wizard" section below.
 
-![base](https://lh3.googleusercontent.com/gNwctkuAXidcNUXvNlC1VlEO7_BLTs6xE58_L29ojNKZlJHWn0b790q6eJ8wMlxFai3Y=s0 "base.png")
+Overview of steps
+
+ 1. Select file type
+ 2. Select a file
+ 3. View and/or edit file contents
+ 4. Save
+
+<br>
+The figure below is the home screen of the UI.  Notice nothing is selected yet as shown with the None placeholders in the "Select a file type" and "Select a file" headers.
+
+![enter image description here](https://lh3.googleusercontent.com/wa7gobG6-lRyg07-ZeLQFA9dOdxHVHwQn6v6OkzbGqV1oeE1C2MlSt9tZj7nEen2ICbV=s0 "start-screen.png")
+
+<br>
+1. Select a file type to edit.  The file types are plans, inventories, tasks, and vars.  
+
+The figure below shows the plan file type is selected.
+
+![enter image description here](https://lh3.googleusercontent.com/NZ19zIHBAeO5D_RqEKbrY83M9wo3msOpzVjYEkqoMBEcpVSVrHDfhn5hJL2HUDWo3Of2=s0 "file-type.png")
+
+<br>
+2. Select a file to view its contents.  The contents are displayed in an editable text box in the center of the screen.  
+
+The figure below shows where the user can select a file and where the user can view and edit the file contents.
+
+![enter image description here](https://lh3.googleusercontent.com/xwIR0IfZmaaL6hb58JSuSRTmbLfBW7Aym8WUqp8eedSpP17L2MCNsAGcmPOmQhD9s5yn=s0 "file-contents.png")
+
+<br>
+3. To edit the file's content just edit the information in the text area shown in step 2.  
+
+The figure below shows the added task named "Test Shell".  Notice how the task was not present in the figure located in step 2.
+
+![enter image description here](https://lh3.googleusercontent.com/SmqZYtoP8cZmJ9Htbyid1GkjaYIyY8h5Njn4ACcgZ1ImoVSRtfJUh-UkDDiCQud6wYgS=s0 "change-content.png")
+
+<br>
+4. To save the changes to the file click the save button. It should be noted that changes to the file is not automatically saved.  After clicking the save button a dialog box should appear confirming or denying if the contents were properly saved.  
+
+The figure below shows the dialog message confirming the contents of the file have been updated after clicking save.
+
+![enter image description here](https://lh3.googleusercontent.com/uDgnmBAYpaRFjqTADtYO7OU3yHmIER8qfJViMrEveGFgX0OInLA3ybKqaBVBJKBJrjxp=s0 "save-file.png")
 
 ##### Henchman output
 
-The Henchman output box is directly under the general text edit area. This box allows users to see what is the output of the Henchman process.
+In order to execute and retrieve Henchman's output, click the execute button when a plan is selected.  The Henchman process should be executed immediately and its output can viewed as a live stream.  The Henchman output box is directly under the general text edit area. This box allows users to see what is the output of the Henchman process.  The two outlined sections in the figure below show where the execute button and output box are located.
 
 ![](https://lh3.googleusercontent.com/8BFvSD1fvfrSb__YUQibaico13pk31x0i7miCNYQlX54JTQRXoHsw8Zndzcg9jxTxUEy=s0 "henchman-output.png")
 
@@ -152,17 +198,17 @@ The image below shows the available endpoints in the swagger editor. The `/inven
 
 ![](https://lh3.googleusercontent.com/rkHqruUX1-WTlZmevscVxWtDjuUCl9z2YAfMsOE2lU_xDTsyygm1TPJHyc6ecT3CivOe=s0 "endpoints.png")
 
-#### How to utilize the API
+#### How to use the API
 
-To utilize this API with other tools use the respective http libraries. For example, in the web application angular’s built in http module is used.
+To use this API with other tools use the respective http libraries. For example, in the web application, angular’s built-in http module is used.
 
 A few examples will be provided below on how to access the endpoints and what response should received.
 
 ##### Retrieving contents of a file
 
-This example shows how to retrieve the contents of a plan.yaml file. To retrieve the the contents of a file the user puts the file name in the URL where `{file}` is. An example being `localhost:10010/v0/plans/curlTest.yaml`. After reaching this endpoint a JSON response following the response schema will be returned.
+This example shows how to retrieve the contents of a plan.yaml file. To retrieve the the contents of a file the user puts the file name in the URL where `{file}` is. An example being `localhost:10010/v0/plans/curlTest.yaml`. After reaching this endpoint a JSON object following the response schema will be returned.  The response will contain a message field describing the error for all non-200 http codes or a content field providing the contents of curlTest.yaml for a successful call.
 
-The figure below shows the swagger editor formatted version of the endpoint details. Such as the expected request parameters and reponses.
+The figure below shows the endpoint details of a plan file call in the swagger editor. The details include information such as the expected request parameters and responses.
 
 ![enter image description here](https://lh3.googleusercontent.com/zf_8ap3FeE2m0WUo9QGdWH5v9VljbMHF0yDPSDnK3U5bSr5Or2OPm_pI8qVRJ9Oho4I=s0 "plan-file.png")
 
@@ -207,7 +253,7 @@ The figure below shows the URL in a browser and the response JSON. The response 
 
 ##### Why Swagger?
 
-This API is created using Swagger-Node so I’ll discuss why I chose to use Swagger over other tools. Swagger is an extremely useful tool to create RESTful APIs. It sets up the “server” side of things such as routing and exposing endpoints. The developer is responsible for creating the logic when such endpoints are accessed and creating the documentation for each endpoint. One of the main reasons for using Swagger is it requires the user to document first before creating the endpoint logic. What this means is the user has to create the URL, write out the supported parameters for each endpoint, and detail the response schema (such as a JSON object with certain fields). For example, the `plan/{file}` has a file parameter in the path and returns a JSON object with a contents field. In addition, Swagger validates that the logic in the controller follows the schema the developer laid out beforehand (e.g the 200 response code has a content field and is a JSON object). Basically Swagger takes out the headache of hosting an API and allows the developer to focus on developing the API!
+This API is created using Swagger-Node so I’ll discuss why I chose to use Swagger over other tools. Swagger is an extremely useful tool to create RESTful APIs. It sets up the “server” side of things such as routing and exposing endpoints. The developer is responsible for creating the logic when such endpoints are accessed and for creating the documentation for each endpoint. One of the main reasons for using Swagger is it requires the user to document first before creating the endpoint logic. What this means is the user has to create the URL, write out the supported parameters for each endpoint, and detail the response schema (such as a JSON object with certain fields). For example, the `plan/{file}` has a file parameter in the path and returns a JSON object with a contents field. In addition, Swagger validates that the logic in the controller follows the schema the developer laid out beforehand (e.g the 200 response code has a content field and is a JSON object). Basically Swagger takes out the headache of hosting an API and allows the developer to focus on developing the API!
 
 ##### Limitations, proposed solutions, and insights
 
@@ -226,7 +272,7 @@ Here are some pending tasks for each component
 ##### Web application tasks
 
 *   Find better placement of features
-*   spice things up with better css and js libraries
+*   Spice things up with better css and js libraries
 
 ##### API tasks
 
